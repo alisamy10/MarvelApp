@@ -20,12 +20,29 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://gateway.marvel.com\"")
+
+            buildConfigField("String", "apikey", "\"102bb675b7d4f8bcfb998f54922c125b\"")
+            buildConfigField("String", "hash", "\"92e84b6bb9b25612294bf663023fc014\"")
+
+
+
+
+
+        }
         release {
             minifyEnabled false
+            buildConfigField("String", "BASE_URL", "\"https://gateway.marvel.com\"")
+            buildConfigField("String", "apikey", "\"102bb675b7d4f8bcfb998f54922c125b\"")
+            buildConfigField("String", "hash", "\"92e84b6bb9b25612294bf663023fc014\"")
+
+
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
 
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
