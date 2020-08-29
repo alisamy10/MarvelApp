@@ -128,10 +128,6 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:1.0.0-alpha02"
 
 
-
-
-    //Times Formatter
-    implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
     // materialfavoritebutton
     implementation 'com.github.ivbaranov:materialfavoritebutton:0.1.4'
 

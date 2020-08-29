@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MarvelApp</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search…</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

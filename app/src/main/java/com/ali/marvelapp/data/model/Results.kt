@@ -1,9 +1,9 @@
 package com.ali.marvelapp.data.model
 
-
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-data class Result(
+data class Results(
     @SerializedName("comics")
     val comics: Comics?,
     @SerializedName("description")
@@ -26,4 +26,4 @@ data class Result(
     val thumbnail: Thumbnail?,
     @SerializedName("urls")
     val urls: List<Url>?
-)
+):Serializable

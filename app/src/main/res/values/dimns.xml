@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="details_padding_start">24dp</dimen>
+    <dimen name="home_loading_height">92dp</dimen>
+    <dimen name="home_loading_padding">32dp</dimen>
+
+    <dimen name="text_padding_start">8dp</dimen>
+    <dimen name="text_padding_end">8dp</dimen>
+
+    <dimen name="details_heading_size">13sp</dimen>
+    <dimen name="details_sub_heading_size">18sp</dimen>
+</resources>

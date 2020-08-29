@@ -28,8 +28,6 @@ object NetworkModule {
                     .newBuilder()
                     .addQueryParameter("apikey", BuildConfig.apikey)
                     .addQueryParameter("hash",BuildConfig.hash)
-
-
                     .build()
             )
             .build()
@@ -50,16 +48,17 @@ object NetworkModule {
     @Singleton
     fun provideGsonConverterFactory()=  GsonConverterFactory.create()
 
+
     @Provides
     @Singleton
     fun provideCoroutineCallAdapterFactory()= CoroutineCallAdapterFactory()
 
+
     @Provides
     @Singleton
     fun provideRetrofitBuilder(gsonConverterFactory: GsonConverterFactory, coroutineCallAdapterFactory: CoroutineCallAdapterFactory
-                               , okHttpClient: OkHttpClient
-    ) =
-        Retrofit.Builder()
+                               , okHttpClient: OkHttpClient) =
+            Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(gsonConverterFactory)
             .addCallAdapterFactory(coroutineCallAdapterFactory)
