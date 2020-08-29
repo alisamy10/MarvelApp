@@ -1,9 +1,10 @@
-package com.ali.marvelapp.ui.fragment.homeFragment
+package com.ali.marvelapp.ui.fragment.searchFragment
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.AbsListView
-import androidx.fragment.app.Fragment
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -17,58 +18,88 @@ import com.ali.marvelapp.ui.MainActivity
 import com.ali.marvelapp.ui.MarvelViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.toolbar_home.*
+import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home), HomeAdapter.Interaction {
+class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.Interaction {
 
-    private val homeAdapter by lazy { HomeAdapter(this) }
-
-    private var isLoading = false
-    private var isLastPage = false
-    private var isScrolling = false
-
-    private lateinit var navController:NavController
+    private val searchAdapter by lazy {
+        SearchAdapter(
+            this
+        )
+    }
     lateinit var viewModel: MarvelViewModel
+    private lateinit var navController: NavController
+
+    var isLoading = false
+    var isLastPage = false
+    var isScrolling = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
-        navController=Navigation.findNavController(view)
+        navController= Navigation.findNavController(view)
 
         setupRecyclerView()
-        observeHomeData()
-        onToolBarClick()
+        observeSearchData()
+
+
+
+        var job: Job? = null
+        etSearch.addTextChangedListener{
+            job?.cancel()
+
+            job = MainScope().launch{
+                delay(500)
+                it?.let {
+                    if(it.toString().isNotEmpty()) {
+                        viewModel.findCharactersByName(it.toString())
+                    }
+                }
+            }
+
+        }
+        toolbarHomeCancelBtn.setOnClickListener{
+          navController.navigateUp()
+        }
+
+
     }
 
-    private fun setupRecyclerView() {
 
-        homeCharactersRecycler.apply {
-            adapter=homeAdapter
-            addOnScrollListener(this@HomeFragment.scrollListener)
+    private fun setupRecyclerView() {
+        searchRecyclerView.apply {
+            adapter = searchAdapter
+            addOnScrollListener(this@SearchFragment.scrollListener)
+
         }
     }
 
-    private fun observeHomeData() {
-
-        viewModel.getData().observe(viewLifecycleOwner, Observer {
+    private fun observeSearchData() {
+        viewModel.getSearchList().observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Error -> {
                     ProgressBar.gone()
-                   isLoading=false
+                    isLoading=false
                     it.msg?.let { msg -> showToast(msg) }
                 }
                 is Resource.Loading -> {
-                    ProgressBar.show()
+                    paginationProgressBar.show()
                     isLoading=true
                 }
                 is Resource.Success -> {
                     if (it.data != null) {
-                        ProgressBar.gone()
+                        paginationProgressBar.gone()
                         isLoading=false
-                        it.data.data?.results?.let { it1 -> homeAdapter.submitList(it1) }
-                        val  totalPages=it.data.data?.total!! / QUERY_PAGE_SIZE + 2
-                        isLastPage = viewModel.homePage == totalPages
+                        it.data?.results?.let { it1 -> searchAdapter.submitList(it1) }
+                        val  totalPages= it.data.total!! / QUERY_PAGE_SIZE + 2
+                        //isLastPage = viewModel.searchPage == totalPages
+
                     }
                 }
             }
@@ -91,11 +122,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), HomeAdapter.Interaction {
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
                     isTotalMoreThanVisible && isScrolling
             if(shouldPaginate) {
-                viewModel.getHomeData()
+                viewModel.findCharactersByName(etSearch.text.toString())
                 isScrolling = false
             } else {
-                homeCharactersRecycler.setPadding(0, 0, 0, 0)
-
+                searchRecyclerView.setPadding(0, 0, 0, 0)
             }
         }
 
@@ -107,17 +137,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), HomeAdapter.Interaction {
         }
     }
 
-    private fun onToolBarClick() {
-        toolbar_home_search_btn.setOnClickListener {
-              navController.navigate(R.id.action_homeFragment_to_searchFragment)
-        }
-    }
-
-
-
 
     override fun onItemSelected(position: Int, item: Results) {
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(item)
+        val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(item)
         findNavController().navigate(action)
     }
 

@@ -1,6 +1,6 @@
 package com.ali.marvelapp.data.sources.remoteApi
 
-import com.ali.marvelapp.data.model.MarvelResponse
+import com.ali.marvelapp.data.model.homeModel.MarvelResponse
 import com.ali.marvelapp.data.model.detailsModel.DetailsMarvelResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -12,15 +12,15 @@ interface ApiService {
        @GET("/v1/public/characters")
     suspend fun getCharactersFromApi(@Query("ts") timeStamp: Int=1 ,
                                      @Query("nameStartsWith") name:String?=null ,
-                                     @Query("offset")offset:Int) : Response<MarvelResponse>
+                                     @Query("offset")offset:Int=0
+                                     ) : Response<MarvelResponse>
 
 
     @GET("/v1/public/{detailsPath}")
-    suspend fun getCharacterDetails(
-        @Path("detailsPath") detailPath: String?,
-        @Query("characters") characterId: Int,
-        @Query("ts") timeStamp: Int=1
-    ): DetailsMarvelResponse
+    suspend fun getCharacterDetails(@Path("detailsPath") detailPath: String?,
+                                    @Query("characters") characterId: Int,
+                                    @Query("ts") timeStamp: Int=1
+                           ): DetailsMarvelResponse
 
 
 }

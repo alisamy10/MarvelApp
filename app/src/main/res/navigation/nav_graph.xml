@@ -13,10 +13,22 @@
 
         <argument
             android:name="results"
-            app:argType="com.ali.marvelapp.data.model.Results" />
+            app:argType="com.ali.marvelapp.data.model.homeModel.Results" />
+
         <action
             android:id="@+id/action_detailsFragment_to_pagerDetailsFragment"
+              app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/normal_static"
+            app:popEnterAnim="@anim/normal_static"
+            app:popExitAnim="@anim/fade_out"
             app:destination="@id/pagerDetailsFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_webViewFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/webViewFragment" />
 
     </fragment>
     <fragment
@@ -32,10 +44,17 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/pagerDetailsFragment"
-        android:name="com.ali.marvelapp.ui.fragment.PagerDetailsFragment"
+        android:name="com.ali.marvelapp.ui.fragment.detailsFragment.PagerDetailsFragment"
         android:label="fragment_pager_details"
         tools:layout="@layout/fragment_pager_details" >
         <argument
@@ -44,5 +63,27 @@
         <argument
             android:name="pos"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.ali.marvelapp.ui.fragment.searchFragment.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_detailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.ali.marvelapp.ui.fragment.detailsFragment.WebViewFragment"
+        android:label="fragment_web_view"
+        tools:layout="@layout/fragment_web_view" >
+        <argument
+            android:name="urls"
+            app:argType="com.ali.marvelapp.data.model.homeModel.Url" />
     </fragment>
 </navigation>

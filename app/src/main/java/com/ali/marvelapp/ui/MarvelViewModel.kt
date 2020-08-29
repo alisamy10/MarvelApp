@@ -1,6 +1,5 @@
 package com.ali.marvelapp.ui
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,22 +7,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ali.marvelapp.common.*
 import com.ali.marvelapp.data.MarvelRepository
-import com.ali.marvelapp.data.model.Data
-import com.ali.marvelapp.data.model.MarvelResponse
+import com.ali.marvelapp.data.model.homeModel.Data
+import com.ali.marvelapp.data.model.homeModel.MarvelResponse
 import com.ali.marvelapp.data.model.detailsModel.ResultsDetails
+import com.ali.marvelapp.data.sources.remoteApi.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 
-class MarvelViewModel   @ViewModelInject constructor (private val marvelRepository: MarvelRepository) : ViewModel() {
+class MarvelViewModel   @ViewModelInject constructor (private val marvelRepository: MarvelRepository , private val service: ApiService) : ViewModel() {
 
      private var marvelsData = MutableLiveData<Resource<MarvelResponse>>()
 
 
+
+
     private var searchData = MutableLiveData<Resource<Data>>()
-    var marvelResponse: MarvelResponse? = null
-    var homePage=0
+
+    private var marvelResponse: MarvelResponse? = null
+    var homePage= 0
 
 
 
@@ -31,23 +34,49 @@ class MarvelViewModel   @ViewModelInject constructor (private val marvelReposito
         getHomeData()
     }
 
+
+
      fun getHomeData() {
         marvelsData.postValue(Resource.Loading())
-
             viewModelScope.launch(Dispatchers.IO) {
                 val result = marvelRepository.getHomeCharacters(homePage)
-                marvelsData.postValue(handleBreakingNewsResponse(result))
+                marvelsData.postValue(handleMarvelResponse(result))
 
             }
     }
 
-     fun loadDetails() {
+    fun getData() : LiveData<Resource<MarvelResponse>> = marvelsData
+
+
+
+    private fun handleMarvelResponse(response: Response<MarvelResponse>) : Resource<MarvelResponse> {
+        if(response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                homePage++
+                if(marvelResponse == null) {
+                    marvelResponse = resultResponse
+                } else {
+
+                    var oldData = marvelResponse?.data?.results
+                    var newAData = resultResponse.data?.results
+
+                    newAData?.let { oldData?.addAll(it) }
+                }
+                return Resource.Success(marvelResponse ?: resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+
+     fun loadDetails(id:Int) {
          viewModelScope.launch(Dispatchers.IO) {
 
-             marvelRepository.loadCharacterDetails(COMICS, 1011334)
-             marvelRepository.loadCharacterDetails(SERIES, 1011334)
-             marvelRepository.loadCharacterDetails(STORIES, 1011334)
-             marvelRepository.loadCharacterDetails(EVENTS, 1011334)
+             marvelRepository.loadCharacterDetails(COMICS, id)
+             marvelRepository.loadCharacterDetails(SERIES, id)
+             marvelRepository.loadCharacterDetails(STORIES, id)
+             marvelRepository.loadCharacterDetails(EVENTS, id)
          }
 
     }
@@ -55,16 +84,16 @@ class MarvelViewModel   @ViewModelInject constructor (private val marvelReposito
 
     fun getPagerList(listType: String?): LiveData<List<ResultsDetails>>? {
         when (listType) {
-            COMICS -> return getComicsList()
-        SERIES -> return getSeriesList()
-STORIES -> return getStoriesList()
-       EVENTS -> return getEventsList()
+                   COMICS -> return getComicsList()
+                   SERIES -> return getSeriesList()
+                   STORIES -> return getStoriesList()
+                   EVENTS -> return getEventsList()
         }
         return null
     }
 
 
-    fun getData() : LiveData<Resource<MarvelResponse>> = marvelsData
+
 
     fun getComicsList(): LiveData<List<ResultsDetails>> {
         return marvelRepository.getComicsList()
@@ -83,33 +112,16 @@ STORIES -> return getStoriesList()
     }
 
 
-    fun getSearchList(): LiveData<Resource<Data>> = searchData
-
     fun findCharactersByName(name: String) {
+        searchData.postValue(Resource.Loading())
         viewModelScope.launch(Dispatchers.IO){
-            val result =marvelRepository.getCharactersByName(name)
+
+            val result =marvelRepository.getHomeCharactersByName(named = name)
             searchData.postValue(Resource.Success(result))
         }
     }
+    fun getSearchList(): MutableLiveData<Resource<Data>> = searchData
 
 
-    private fun handleBreakingNewsResponse(response: Response<MarvelResponse>) : Resource<MarvelResponse> {
-        if(response.isSuccessful) {
-            response.body()?.let { resultResponse ->
-                homePage++
-                if(marvelResponse == null) {
-                    marvelResponse = resultResponse
-                } else {
-
-                    var oldArticles = marvelResponse?.data
-                    var newArticles = resultResponse.data
-                    Log.e("a",oldArticles.toString())
-                    Log.e("a",newArticles.toString())
-                }
-                return Resource.Success(marvelResponse ?: resultResponse)
-            }
-        }
-        return Resource.Error(response.message())
-    }
 
 }

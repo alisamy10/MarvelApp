@@ -1,7 +1,7 @@
-package com.ali.marvelapp.data.model
+package com.ali.marvelapp.data.model.homeModel
 
 
-import com.ali.marvelapp.data.model.Data
+import com.ali.marvelapp.data.model.homeModel.Data
 import com.google.gson.annotations.SerializedName
 
 data class MarvelResponse(

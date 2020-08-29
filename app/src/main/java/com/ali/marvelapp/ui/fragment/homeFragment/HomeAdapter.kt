@@ -8,11 +8,10 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import com.ali.marvelapp.R
 import com.ali.marvelapp.common.loadImage
-import com.ali.marvelapp.data.model.Results
+import com.ali.marvelapp.data.model.homeModel.Results
 import kotlinx.android.synthetic.main.item_char.view.*
 
-class HomeAdapter(private val interaction: Interaction? = null) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeAdapter(private val interaction: Interaction? = null) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Results>() {
 

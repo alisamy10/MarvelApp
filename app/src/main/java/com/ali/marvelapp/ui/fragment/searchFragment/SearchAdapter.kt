@@ -1,4 +1,4 @@
-package com.ali.marvelapp.ui.fragment.homeFragment
+package com.ali.marvelapp.ui.fragment.searchFragment
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import com.ali.marvelapp.R
 import com.ali.marvelapp.common.loadImage
-import com.ali.marvelapp.data.model.Results
+import com.ali.marvelapp.data.model.homeModel.Results
 import kotlinx.android.synthetic.main.item_char.view.*
 
 class SearchAdapter(private val interaction: Interaction? = null) :

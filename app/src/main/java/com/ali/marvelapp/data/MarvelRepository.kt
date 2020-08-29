@@ -2,14 +2,14 @@ package com.ali.marvelapp.data
 
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ali.marvelapp.common.COMICS
 import com.ali.marvelapp.common.EVENTS
 import com.ali.marvelapp.common.SERIES
 import com.ali.marvelapp.common.STORIES
-import com.ali.marvelapp.data.model.Data
-import com.ali.marvelapp.data.model.MarvelResponse
-import com.ali.marvelapp.data.model.detailsModel.DetailsMarvelResponse
+import com.ali.marvelapp.data.model.homeModel.Data
+import com.ali.marvelapp.data.model.homeModel.MarvelResponse
 import com.ali.marvelapp.data.model.detailsModel.ResultsDetails
 import com.ali.marvelapp.data.sources.remoteApi.ApiService
 import kotlinx.coroutines.coroutineScope
@@ -18,56 +18,35 @@ import javax.inject.Inject
 
 class MarvelRepository @Inject constructor(private val service: ApiService ) {
 
-
-
     lateinit var data: Response<MarvelResponse>
 
 
-    private val comicsList= MutableLiveData<List<ResultsDetails>>()
-    private val seriesList= MutableLiveData<List<ResultsDetails>>()
-    private val storiesList= MutableLiveData<List<ResultsDetails>>()
-    private val eventsList= MutableLiveData<List<ResultsDetails>>()
+    private val comicsList = MutableLiveData<List<ResultsDetails>>()
+    private val seriesList = MutableLiveData<List<ResultsDetails>>()
+    private val storiesList = MutableLiveData<List<ResultsDetails>>()
+    private val eventsList = MutableLiveData<List<ResultsDetails>>()
 
 
-
-     suspend fun getCharactersByName(name: String): Data {
-        return getData(name).body()?.data!!
-    }
+    suspend fun getHomeCharactersByName(named: String): Data =
+        service.getCharactersFromApi(name = named).body()?.data!!
 
 
-    suspend fun getHomeCharacters(offset: Int): Response<MarvelResponse> = service.getCharactersFromApi(offset = offset)
+    suspend fun getHomeCharacters(offset: Int): Response<MarvelResponse> =
+        service.getCharactersFromApi(offset = offset)
 
 
-    private suspend fun getData(name: String?, offset: Int = 1): Response<MarvelResponse> {
-        try {
-            coroutineScope {
-                data = service.getCharactersFromApi(name = name,offset =  offset)
-            }
-        } catch (e: Exception) {
-            Log.e("a", e.message.toString())
-        }
-        return data
-    }
-
-
-     suspend fun loadCharacterDetails(detailPath: String, characterId: Int) {
+    suspend fun loadCharacterDetails(detailPath: String, characterId: Int) {
         try {
 
             coroutineScope {
                 getListType(detailPath)?.postValue(
-                    service.getCharacterDetails(detailPath,characterId).data?.results
+                    service.getCharacterDetails(detailPath, characterId).data?.results
                 )
             }
         } catch (e: Exception) {
             Log.e("b", e.message.toString())
         }
     }
-
-
-
-
-
-
 
 
     private fun getListType(detailPath: String): MutableLiveData<List<ResultsDetails>>? {
@@ -81,28 +60,12 @@ class MarvelRepository @Inject constructor(private val service: ApiService ) {
     }
 
 
-    fun getComicsList(): MutableLiveData<List<ResultsDetails>> {
-        return comicsList
-    }
+    fun getComicsList(): LiveData<List<ResultsDetails>> = comicsList
 
-    fun getSeriesList(): MutableLiveData<List<ResultsDetails>> {
-        return seriesList
-    }
+    fun getSeriesList(): LiveData<List<ResultsDetails>> = seriesList
 
-    fun getStoriesList(): MutableLiveData<List<ResultsDetails>> {
-        return storiesList
-    }
+    fun getStoriesList(): LiveData<List<ResultsDetails>> = storiesList
 
-    fun getEventsList(): MutableLiveData<List<ResultsDetails>> {
-        return eventsList
-    }
-
-
-
-
-
-
-
-
+    fun getEventsList(): LiveData<List<ResultsDetails>> = eventsList
 
 }

@@ -1,14 +1,12 @@
-package com.ali.marvelapp.data.model
+package com.ali.marvelapp.data.model.homeModel
 
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class ItemXXX(
+data class Item(
     @SerializedName("name")
     val name: String?,
     @SerializedName("resourceURI")
-    val resourceURI: String?,
-    @SerializedName("type")
-    val type: String?
+    val resourceURI: String?
 ):Serializable

@@ -1,4 +1,4 @@
-package com.ali.marvelapp.data.model
+package com.ali.marvelapp.data.model.homeModel
 
 
 import com.google.gson.annotations.SerializedName
@@ -11,7 +11,7 @@ data class Data(
     @SerializedName("offset")
     val offset: Int?=0,
     @SerializedName("results")
-    val results: List<Results>?=null,
+    val results: MutableList<Results>?=null,
     @SerializedName("total")
     val total: Int?=0
 )
