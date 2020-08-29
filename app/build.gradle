@@ -38,7 +38,6 @@ android {
             buildConfigField("String", "hash", "\"92e84b6bb9b25612294bf663023fc014\"")
 
 
-
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
@@ -126,6 +125,7 @@ dependencies {
 
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02"
     kapt "androidx.hilt:hilt-compiler:1.0.0-alpha02"
+
 
 
     // materialfavoritebutton

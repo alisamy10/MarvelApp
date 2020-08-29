@@ -2,6 +2,7 @@ package com.ali.marvelapp.data.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class ItemXXX(
     @SerializedName("name")
@@ -10,4 +11,4 @@ data class ItemXXX(
     val resourceURI: String?,
     @SerializedName("type")
     val type: String?
-)
+):Serializable

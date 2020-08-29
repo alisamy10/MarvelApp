@@ -1,10 +1,10 @@
-package com.ali.marvelapp.data.model
+package com.ali.marvelapp.data.model.detailsModel
 
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class Series(
+data class Events(
     @SerializedName("available")
     val available: Int?,
     @SerializedName("collectionURI")

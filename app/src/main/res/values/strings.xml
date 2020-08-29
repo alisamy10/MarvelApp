@@ -4,4 +4,16 @@
     <string name="search_hint">Search…</string>
     <string name="cancel">Cancel</string>
 
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="comics">Comics</string>
+    <string name="series">Series</string>
+    <string name="stories">Stories</string>
+    <string name="events">Events</string>
+    <string name="related_links">Related Links</string>
+    <string name="not_available">Not available</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

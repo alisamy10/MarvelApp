@@ -1,4 +1,4 @@
-package com.ali.marvelapp.data.model
+package com.ali.marvelapp.data.model.detailsModel
 
 
 import com.google.gson.annotations.SerializedName
@@ -9,4 +9,4 @@ data class ItemXX(
     val name: String?,
     @SerializedName("resourceURI")
     val resourceURI: String?
-):Serializable
+): Serializable

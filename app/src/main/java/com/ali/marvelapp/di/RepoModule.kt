@@ -15,24 +15,8 @@ object RepoModule {
 
     @Provides
     @Singleton
-    fun provideMarvelRepository(iOnlineDataSource: IOnlineDataSource)
-            = MarvelRepository(iOnlineDataSource)
-
-
-    @Provides
-    @Singleton
-    fun provideIOnlineDataSource( service: IApiHelper):IOnlineDataSource
-            = OnlineSourcesBasedRetroFit(service)
-
-
-
-
-    @Provides
-    @Singleton
-    fun provideIApiHelper( apiService: ApiService):IApiHelper
-            = ApiHelperImpl(apiService)
-
-
+    fun provideMarvelRepository(service: ApiService)
+            = MarvelRepository(service)
 
 
 

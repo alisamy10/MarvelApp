@@ -14,6 +14,11 @@ import com.google.android.material.snackbar.Snackbar
 
 const val QUERY_PAGE_SIZE  =20
 
+const val COMICS = "comics"
+const val SERIES = "series"
+const val STORIES = "stories"
+const val EVENTS = "events"
+
 fun Fragment.showToast(msg: String) {
     Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
 }

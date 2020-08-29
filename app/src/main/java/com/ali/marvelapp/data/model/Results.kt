@@ -1,9 +1,14 @@
 package com.ali.marvelapp.data.model
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Results(
+    @SerializedName("title")
+    @Expose
+    private var title: String? = null,
+
     @SerializedName("comics")
     val comics: Comics?,
     @SerializedName("description")

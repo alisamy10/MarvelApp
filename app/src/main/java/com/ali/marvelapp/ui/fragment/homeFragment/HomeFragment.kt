@@ -34,13 +34,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), HomeAdapter.Interaction,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         setupRecyclerView()
         observeHomeData()
-        toolBarOnClick()
-
+        onToolBarClick()
     }
-
 
     private fun setupRecyclerView() {
         homeCharactersRecycler.adapter=homeAdapter
@@ -50,9 +47,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), HomeAdapter.Interaction,
         }
     }
 
-
     private fun observeHomeData() {
-
 
         viewModel.getData().observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -110,17 +105,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), HomeAdapter.Interaction,
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-    private fun toolBarOnClick() {
+    private fun onToolBarClick() {
         toolbar_home_search_btn.setOnClickListener(View.OnClickListener {
             onStartSearching()
         })
@@ -128,7 +113,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), HomeAdapter.Interaction,
             onCloseSearch()
         })
     }
-
 
     private fun onStartSearching() {
         toolbar_logo.invisible()
@@ -147,7 +131,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), HomeAdapter.Interaction,
 
     }
 
-
     private fun onCloseSearch() {
         viewModel.getSearchList().removeObservers(this)
         setupRecyclerView()
@@ -161,18 +144,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), HomeAdapter.Interaction,
     }
 
 
-
-
-
-
     override fun onItemSelected(position: Int, item: Results) {
-
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(item)
         findNavController().navigate(action)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         if (query.isNullOrEmpty()) return false
+
         viewModel.findCharactersByName(query)
         return true
     }

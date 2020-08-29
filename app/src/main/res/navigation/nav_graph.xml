@@ -10,9 +10,14 @@
         android:name="com.ali.marvelapp.ui.fragment.detailsFragment.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
+
         <argument
             android:name="results"
             app:argType="com.ali.marvelapp.data.model.Results" />
+        <action
+            android:id="@+id/action_detailsFragment_to_pagerDetailsFragment"
+            app:destination="@id/pagerDetailsFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -27,5 +32,17 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             />
+    </fragment>
+    <fragment
+        android:id="@+id/pagerDetailsFragment"
+        android:name="com.ali.marvelapp.ui.fragment.PagerDetailsFragment"
+        android:label="fragment_pager_details"
+        tools:layout="@layout/fragment_pager_details" >
+        <argument
+            android:name="listItem"
+            app:argType="string" />
+        <argument
+            android:name="pos"
+            app:argType="integer" />
     </fragment>
 </navigation>

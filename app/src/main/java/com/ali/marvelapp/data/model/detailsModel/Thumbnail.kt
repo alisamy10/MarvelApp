@@ -1,4 +1,4 @@
-package com.ali.marvelapp.data.model
+package com.ali.marvelapp.data.model.detailsModel
 
 
 import com.google.gson.annotations.SerializedName
@@ -9,4 +9,4 @@ data class Thumbnail(
     val extension: String?,
     @SerializedName("path")
     val path: String?
-):Serializable
+): Serializable

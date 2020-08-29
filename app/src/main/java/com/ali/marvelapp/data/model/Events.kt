@@ -2,6 +2,7 @@ package com.ali.marvelapp.data.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Events(
     @SerializedName("available")
@@ -12,4 +13,4 @@ data class Events(
     val items: List<ItemX>?,
     @SerializedName("returned")
     val returned: Int?
-)
+): Serializable
